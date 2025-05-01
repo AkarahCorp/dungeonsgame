@@ -1,0 +1,69 @@
+{
+    "name": "akarahnet:catacombs_pool",
+    "fallback": "akarahnet:failed_catacombs_pool",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/spawn_room",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/pillars",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/walled",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/lava_bridge",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/lava_roundabout",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/l_shape/barriers",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 2,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/boss_room_1",
+                "processors": [],
+                "projection": "rigid"
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "name": "akarahnet:catacombs_pool",
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/blocked_door",
+                "processors": [],
+                "projection": "rigid"
+            }
+        }
+    ]
+}

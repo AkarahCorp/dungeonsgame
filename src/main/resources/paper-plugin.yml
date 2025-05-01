@@ -1,0 +1,4 @@
+name: dungeons
+version: '1.0-SNAPSHOT'
+main: dev.akarah.dungeons.Main
+api-version: '1.21'
