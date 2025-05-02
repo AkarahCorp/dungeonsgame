@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DungeonManager {
     List<DungeonRun> dungeonRuns = new ArrayList<>();
@@ -35,11 +36,20 @@ public class DungeonManager {
                         64,
                         locZ
                 ),
-                p.stream().map(Player::getUniqueId).toList()
+                p.stream().map(Player::getUniqueId).toList(),
+                new AtomicInteger(0)
         );
         this.dungeonRuns.add(run);
         run.start();
         return run;
+    }
+
+    public void tickDungeons() {
+        this.autoClearDungeons();
+
+        for(var run : dungeonRuns) {
+            run.tick();
+        }
     }
 
     public void autoClearDungeons() {
@@ -60,8 +70,12 @@ public class DungeonManager {
 
                 }
             }
-            run.end();
-            toRemove.add(run);
+            if(run.failures().incrementAndGet() == 10) {
+                run.end();
+                toRemove.add(run);
+            } else {
+                run.failures().set(0);
+            }
         }
 
         for(var remove : toRemove) {

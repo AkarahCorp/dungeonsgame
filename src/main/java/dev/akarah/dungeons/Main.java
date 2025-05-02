@@ -25,7 +25,7 @@ public final class Main extends JavaPlugin {
                         .copy(Objects.requireNonNull(Bukkit.getWorld("world")))
         );
 
-        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().autoClearDungeons(), 1, 1);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().tickDungeons(), 5, 5);
     }
 
     @Override

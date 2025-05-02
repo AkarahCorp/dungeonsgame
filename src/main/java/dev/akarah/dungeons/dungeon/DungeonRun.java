@@ -4,6 +4,8 @@ import dev.akarah.dungeons.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
@@ -14,10 +16,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public record DungeonRun(
         Location origin,
-        List<UUID> members
+        List<UUID> members,
+        AtomicInteger failures
 ) {
     public void start() {
         origin.getChunk().load(true);
@@ -40,6 +44,7 @@ public record DungeonRun(
                     origin.getChunk().setForceLoaded(false);
                 }
             });
+
         }
     }
 
@@ -62,16 +67,6 @@ public record DungeonRun(
 
     public void end() {
         System.out.println("Ending " + this);
-//        for(int x = -300; x<=300; x++) {
-//            for(int y = -15; y<=15; y++) {
-//                for(int z = -300; z<=300; z++) {
-//                    origin.getWorld().setBlockData(
-//                            origin.clone().add(x, y, z),
-//                            Material.AIR.createBlockData()
-//                    );
-//                }
-//            }
-//        }
     }
 
     public void place() {
@@ -89,5 +84,37 @@ public record DungeonRun(
             }
 
         }, 1);
+    }
+
+    public void tick() {
+        for(var member : this.members) {
+            var p = Bukkit.getPlayer(member);
+            if(p == null) {
+                continue;
+            }
+
+            var center = p.getLocation();
+
+            try {
+                if(center.distance(origin) > 500) {
+                    continue;
+                }
+            } catch (IllegalArgumentException exception) {
+                continue;
+            }
+
+            var entities = center.getNearbyEntities(20, 20, 20);
+            for(var entity : entities) {
+                if(entity instanceof ArmorStand armorStand) {
+                    var pos = armorStand.getLocation();
+                    armorStand.remove();
+
+                    center.getWorld().spawnEntity(
+                            pos,
+                            EntityType.ZOMBIE
+                    );
+                }
+            }
+        }
     }
 }
