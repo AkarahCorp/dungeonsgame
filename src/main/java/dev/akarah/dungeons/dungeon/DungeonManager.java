@@ -22,12 +22,18 @@ public class DungeonManager {
     }
 
     public DungeonRun createRun(List<Player> p) {
+        var randX = (int) (Math.random() * 100000);
+        var randZ = (int) (Math.random() * 100000);
+
+        var locX = (randX * 128) + (128 * 5);
+        var locZ = (randZ * 128) + (128 * 5);
+
         var run = new DungeonRun(
                 new Location(
                         Main.getInstance().dungeonWorld(),
-                        (Math.random() * 1000000) + 1000000,
+                        locX,
                         64,
-                        (Math.random() * 1000000) + 1000000
+                        locZ
                 ),
                 p.stream().map(Player::getUniqueId).toList()
         );
