@@ -1,5 +1,6 @@
 package dev.akarah.dungeons;
 
+import dev.akarah.dungeons.config.GlobalData;
 import dev.akarah.dungeons.dungeon.DungeonEvents;
 import dev.akarah.dungeons.dungeon.DungeonManager;
 import org.bukkit.Bukkit;
@@ -15,11 +16,14 @@ public final class Main extends JavaPlugin {
 
     DungeonManager manager = new DungeonManager();
     World dungeonWorld;
+    GlobalData data;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         MAIN = this;
+
+        this.data = Bootstrapper.INSTANCE.data;
 
         this.dungeonWorld = Bukkit.createWorld(
                 WorldCreator.name("dungeon_world")
@@ -27,7 +31,6 @@ public final class Main extends JavaPlugin {
         );
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().tickDungeons(), 5, 5);
-
         Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);
     }
 
@@ -46,5 +49,13 @@ public final class Main extends JavaPlugin {
 
     public World dungeonWorld() {
         return dungeonWorld;
+    }
+
+    public GlobalData data() {
+        return data;
+    }
+
+    public NamespacedKey createKey(String path) {
+        return new NamespacedKey("akarahnet", path);
     }
 }

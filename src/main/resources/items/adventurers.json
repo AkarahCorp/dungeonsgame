@@ -1,0 +1,18 @@
+[
+  {
+    "id": "akarahnet:adventurers/blade",
+    "type": "minecraft:stone_sword",
+    "name": "Adventurers' Blade",
+    "stats": {
+      "attack_damage": 10
+    }
+  },
+  {
+    "id": "akarahnet:adventurers/helmet",
+    "type": "minecraft:leather_helmet",
+    "name": "Adventurers' Helmet",
+    "stats": {
+      "armor": 1
+    }
+  }
+]
