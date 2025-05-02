@@ -1,12 +1,12 @@
 {
-    "name": "akarahnet:catacombs_pool",
-    "fallback": "minecraft:empty",
+    "name": "akarahnet:catacombs/start_pool",
+    "fallback": "akarahnet:catacombs_pool",
     "elements": [
         {
             "weight": 1,
             "element": {
                 "element_type": "single_pool_element",
-                "location": "akarahnet:catacombs/blocked_door",
+                "location": "akarahnet:catacombs/spawn_room",
                 "processors": [],
                 "projection": "rigid"
             }

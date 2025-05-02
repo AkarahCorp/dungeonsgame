@@ -1,4 +1,5 @@
 name: dungeons
 version: '1.0-SNAPSHOT'
 main: dev.akarah.dungeons.Main
+bootstrapper: dev.akarah.dungeons.Bootstrapper
 api-version: '1.21'

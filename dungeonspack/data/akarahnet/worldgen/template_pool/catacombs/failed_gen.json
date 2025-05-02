@@ -1,12 +1,12 @@
 {
-    "name": "akarahnet:start_catacombs_pool",
-    "fallback": "akarahnet:catacombs_pool",
+    "name": "akarahnet:catacombs/failed_gen",
+    "fallback": "minecraft:empty",
     "elements": [
         {
             "weight": 1,
             "element": {
                 "element_type": "single_pool_element",
-                "location": "akarahnet:catacombs/spawn_room",
+                "location": "akarahnet:catacombs/blocked_door",
                 "processors": [],
                 "projection": "rigid"
             }

@@ -1,7 +1,16 @@
 {
     "name": "akarahnet:catacombs_pool",
-    "fallback": "akarahnet:failed_catacombs_pool",
+    "fallback": "akarahnet:catacombs/failed_pool",
     "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/first_room",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
         {
             "weight": 1,
             "element": {
@@ -57,7 +66,7 @@
             }
         },
         {
-            "weight": 2,
+            "weight": 1,
             "element": {
                 "element_type": "single_pool_element",
                 "location": "akarahnet:catacombs/1x1/boss_room_1",
