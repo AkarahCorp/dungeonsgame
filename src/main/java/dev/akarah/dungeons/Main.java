@@ -1,5 +1,6 @@
 package dev.akarah.dungeons;
 
+import dev.akarah.dungeons.dungeon.DungeonEvents;
 import dev.akarah.dungeons.dungeon.DungeonManager;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -26,6 +27,8 @@ public final class Main extends JavaPlugin {
         );
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().tickDungeons(), 5, 5);
+
+        Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);
     }
 
     @Override
