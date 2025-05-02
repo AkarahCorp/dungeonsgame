@@ -57,7 +57,7 @@ public record DungeonRun(
                     System.out.println("task: " + task2);
                     Bukkit.getServer().dispatchCommand(
                             Bukkit.getConsoleSender(),
-                            "execute in minecraft:dungeon_world run place jigsaw akarahnet:start_catacombs_pool akarahnet:catacombs/spawn_room 20 " + (int) origin.x() + " " + (int) origin.y() + " " + (int) origin.z()
+                            "execute in minecraft:dungeon_world run place jigsaw akarahnet:catacombs/start akarahnet:catacombs/spawn_room 20 " + (int) origin.x() + " " + (int) origin.y() + " " + (int) origin.z()
                     );
                 }, 1);
             } else {

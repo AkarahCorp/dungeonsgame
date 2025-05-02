@@ -1,5 +1,5 @@
 {
-    "name": "akarahnet:catacombs/failed_gen",
+    "name": "akarahnet:catacombs/failed",
     "fallback": "minecraft:empty",
     "elements": [
         {

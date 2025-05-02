@@ -1,6 +1,6 @@
 {
-    "name": "akarahnet:catacombs/start_pool",
-    "fallback": "akarahnet:catacombs_pool",
+    "name": "akarahnet:catacombs/start",
+    "fallback": "akarahnet:catacombs/pool",
     "elements": [
         {
             "weight": 1,

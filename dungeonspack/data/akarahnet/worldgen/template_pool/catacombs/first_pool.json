@@ -1,0 +1,51 @@
+{
+    "name": "akarahnet:catacombs/first_pool",
+    "fallback": "akarahnet:catacombs/failed",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/pillars",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/walled",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/lava_bridge",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/1x1/lava_roundabout",
+                "processors": [],
+                "projection": "rigid"
+            }
+        },
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "akarahnet:catacombs/l_shape/barriers",
+                "processors": [],
+                "projection": "rigid"
+            }
+        }
+    ]
+}
