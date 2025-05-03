@@ -10,6 +10,16 @@
     }
   },
   {
+    "id": "adventurers/bow",
+    "visuals": {
+      "type": "minecraft:bow",
+      "name": "Adventurers' Bow"
+    },
+    "stats": {
+      "attack_damage": 4
+    }
+  },
+  {
     "id": "adventurers/helmet",
     "visuals": {
       "type": "minecraft:leather_helmet",

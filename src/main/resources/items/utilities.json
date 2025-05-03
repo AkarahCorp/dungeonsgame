@@ -1,0 +1,9 @@
+[
+  {
+    "id": "util/arrow",
+    "visuals": {
+      "type": "minecraft:arrow",
+      "name": "Arrow"
+    }
+  }
+]

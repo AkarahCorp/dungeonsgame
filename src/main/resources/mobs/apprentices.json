@@ -1,0 +1,72 @@
+[
+  {
+    "id": "zombie_apprentice",
+    "visuals": {
+      "type": "zombie",
+      "name": "Zombie Apprentice"
+    },
+    "stats": {
+      "max_health": 20,
+      "attack_damage": 2
+    },
+    "equipment": {
+      "main_hand": "zombie_apprentice/sword",
+      "head": "zombie_apprentice/helmet",
+      "body": "zombie_apprentice/chestplate",
+      "legs": "zombie_apprentice/leggings",
+      "feet": "zombie_apprentice/boots"
+    },
+    "drops": [
+      {
+        "item": "zombie_apprentice/sword",
+        "chance": 15
+      },
+      {
+        "item": "zombie_apprentice/helmet",
+        "chance": 15
+      },
+      {
+        "item": "zombie_apprentice/chestplate",
+        "chance": 15
+      },
+      {
+        "item": "zombie_apprentice/leggings",
+        "chance": 15
+      },
+      {
+        "item": "zombie_apprentice/boots",
+        "chance": 15
+      }
+    ]
+  },
+  {
+    "id": "skeleton_apprentice",
+    "visuals": {
+      "type": "skeleton",
+      "name": "Skeleton Apprentice"
+    },
+    "stats": {
+      "max_health": 15,
+      "attack_damage": 1
+    },
+    "equipment": {
+      "main_hand": "adventurers/bow"
+    },
+    "drops": [
+      {
+        "item": "util/arrow",
+        "chance": 30,
+        "amount": 2
+      },
+      {
+        "item": "util/arrow",
+        "chance": 30,
+        "amount": 2
+      },
+      {
+        "item": "adventurers/bow",
+        "chance": 15
+      }
+    ]
+  }
+]

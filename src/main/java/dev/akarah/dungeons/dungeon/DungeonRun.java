@@ -4,6 +4,7 @@ import dev.akarah.dungeons.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
@@ -15,6 +16,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -109,10 +112,18 @@ public record DungeonRun(
                     var pos = armorStand.getLocation();
                     armorStand.remove();
 
-                    center.getWorld().spawnEntity(
-                            pos,
-                            EntityType.ZOMBIE
+                    var choices = new String[]{
+                            "zombie_apprentice",
+                            "skeleton_apprentice"
+                    };
+                    var id = choices[new Random().nextInt(0, choices.length)];
+                    var mob = Main.getInstance().data().mobs().get(
+                            Objects.requireNonNull(NamespacedKey.fromString(id))
                     );
+                    if(mob == null) {
+                        return;
+                    }
+                    mob.spawn(pos);
                 }
             }
         }
