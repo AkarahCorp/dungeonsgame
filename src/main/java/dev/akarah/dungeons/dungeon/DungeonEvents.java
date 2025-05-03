@@ -1,8 +1,10 @@
 package dev.akarah.dungeons.dungeon;
 
+import dev.akarah.dungeons.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.FallingBlock;
@@ -15,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 public class DungeonEvents implements Listener {
     @EventHandler
@@ -67,7 +71,22 @@ public class DungeonEvents implements Listener {
             event.setCancelled(true);
             var blockState = event.getClickedBlock().getState();
             if(blockState instanceof Chest chest) {
-                chest.open();
+                if(!chest.isOpen()) {
+                    chest.open();
+
+                    var choices = new String[]{
+                        "food/bread"
+                    };
+                    var id = choices[new Random().nextInt(0, choices.length)];
+
+                    event.getPlayer().getInventory().addItem(
+                            Objects.requireNonNull(
+                                    Main.getInstance().data().items().get(
+                                            Objects.requireNonNull(NamespacedKey.fromString(id))
+                                    )
+                            ).toItemStack()
+                    );
+                }
             }
         }
     }

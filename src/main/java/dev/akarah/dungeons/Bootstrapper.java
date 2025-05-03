@@ -8,6 +8,7 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Keyable;
 import dev.akarah.dungeons.commands.CItemCommand;
 import dev.akarah.dungeons.commands.HubCommand;
+import dev.akarah.dungeons.commands.KitCommand;
 import dev.akarah.dungeons.commands.StartRunCommand;
 import dev.akarah.dungeons.config.DataRegistry;
 import dev.akarah.dungeons.config.GlobalData;
@@ -40,6 +41,7 @@ public class Bootstrapper implements PluginBootstrap {
             StartRunCommand.register(event.registrar());
             HubCommand.register(event.registrar());
             CItemCommand.register(event.registrar());
+            KitCommand.register(event.registrar());
         });
     }
 
