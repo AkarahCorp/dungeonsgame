@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("com.gradleup.shadow") version "9.0.0-beta13"
 }
 
 group = 'dev.akarah'
@@ -25,6 +26,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.mojang:datafixerupper:8.0.16")
+    implementation("org.postgresql:postgresql:42.7.5")
 }
 
 tasks {
