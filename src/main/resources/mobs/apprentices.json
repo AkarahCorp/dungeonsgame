@@ -25,12 +25,12 @@
           "zombie_apprentice/leggings",
           "zombie_apprentice/boots"
         ],
-        "chance": 15
+        "chance": 25
       }
     ]
   },
   {
-    "id": "skeleton_apprentice",
+    "id": "skeleon_apprentice",
     "visuals": {
       "type": "skeleton",
       "name": "Skeleton Apprentice"

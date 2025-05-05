@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -71,6 +72,7 @@ public record CustomItem(
                                 AttributeModifier.Operation.ADD_NUMBER)).build());
         is.unsetData(DataComponentTypes.BLOCKS_ATTACKS);
         is.unsetData(DataComponentTypes.FOOD);
+        is.setData(DataComponentTypes.RARITY, ItemRarity.COMMON);
 
         if(this.visuals().type().toString().toLowerCase().contains("sword")) {
             is.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks().build());

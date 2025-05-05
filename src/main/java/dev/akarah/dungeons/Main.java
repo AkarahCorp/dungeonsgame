@@ -1,6 +1,7 @@
 package dev.akarah.dungeons;
 
 import dev.akarah.dungeons.config.GlobalData;
+import dev.akarah.dungeons.config.item.InventoryEvents;
 import dev.akarah.dungeons.dungeon.DungeonEvents;
 import dev.akarah.dungeons.dungeon.DungeonManager;
 import org.bukkit.Bukkit;
@@ -32,7 +33,10 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().tickDungeons(), 5, 5);
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().data().statsHolder().loopPlayerStats(), 2, 2);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> InventoryEvents.updateAllInventories(), 5, 5);
+
         Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryEvents(), this);
     }
 
     @Override
