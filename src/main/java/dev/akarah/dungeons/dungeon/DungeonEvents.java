@@ -1,14 +1,14 @@
 package dev.akarah.dungeons.dungeon;
 
 import dev.akarah.dungeons.Main;
+import dev.akarah.dungeons.config.item.CustomItem;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -20,8 +20,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
@@ -31,6 +30,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class DungeonEvents implements Listener {
+
     @EventHandler
     public void breakCoal(BlockBreakEvent event) {
         if(event.getBlock().getType().equals(Material.COAL_BLOCK)) {
@@ -112,6 +112,20 @@ public class DungeonEvents implements Listener {
     }
 
     @EventHandler
+    public void shootBow(PlayerInteractEvent event) {
+        var mainItem = event.getPlayer().getInventory().getItem(EquipmentSlot.HAND);
+
+        if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR)
+                && event.getHand() == EquipmentSlot.HAND
+                && CustomItem.getItemId(mainItem).toString().contains("bow")
+        && Main.getInstance().data().statsHolder().getHitCooldown(event.getPlayer()) <= 0) {
+            Main.getInstance().data().statsHolder()
+                            .setHitCooldown(event.getPlayer(), 10);
+            event.getPlayer().launchProjectile(Arrow.class);
+        }
+    }
+
+    @EventHandler
     public void landProjectile(ProjectileHitEvent event) {
         if(event.getEntity().getPersistentDataContainer().has(Main.getInstance().createKey("arrow/damage"))) {
             event.setCancelled(true);
@@ -135,11 +149,13 @@ public class DungeonEvents implements Listener {
             if(attackerEntity == null && hitEntity != null) {
                 if(hitEntity instanceof LivingEntity le) {
                     le.damage(damage);
+                    le.setNoDamageTicks(0);
                 }
             }
             if(attackerEntity != null && hitEntity != null) {
                 if(hitEntity instanceof LivingEntity le) {
                     le.damage(damage, attackerEntity);
+                    le.setNoDamageTicks(0);
                 }
             }
         }

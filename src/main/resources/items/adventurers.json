@@ -2,7 +2,7 @@
   {
     "id": "adventurers/blade",
     "visuals": {
-      "type": "minecraft:stone_sword",
+      "type": "minecraft:wooden_sword",
       "name": "Adventurers' Blade"
     },
     "stats": {

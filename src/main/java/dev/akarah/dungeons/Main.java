@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
         );
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().dungeonManager().tickDungeons(), 5, 5);
-        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().data().statsHolder().loopPlayerStats(), 2, 2);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> Main.getInstance().data().statsHolder().loopPlayerStats(), 1, 1);
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(this, task -> InventoryEvents.updateAllInventories(), 5, 5);
 
         Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);

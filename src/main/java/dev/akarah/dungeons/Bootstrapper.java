@@ -57,11 +57,19 @@ public class Bootstrapper implements PluginBootstrap {
                 files.forEach(path -> {
                     try {
                         var json = new Gson().fromJson(Files.readString(path), JsonElement.class);
-                        var items = codec.listOf().decode(JsonOps.INSTANCE, json).getOrThrow().getFirst();
-                        for(var item : items) {
-                            System.out.println("Registering id " + item.getKey() + " to registry " + folderName);
-                            registry.register(item.getKey(), item);
+                        try {
+                            codec.listOf().decode(JsonOps.INSTANCE, json).ifSuccess(pair -> {
+                                for(var item : pair.getFirst()) {
+                                    System.out.println("Registering id " + item.getKey() + " to registry " + folderName);
+                                    registry.register(item.getKey(), item);
+                                }
+                            }).ifError(System.out::println);
+                        } catch (Exception e) {
+                            System.out.println("failed at " + path);
+                            e.printStackTrace();
                         }
+
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

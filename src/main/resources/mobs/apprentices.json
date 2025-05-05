@@ -12,7 +12,7 @@
     "equipment": {
       "main_hand": "zombie_apprentice/sword",
       "head": "zombie_apprentice/helmet",
-      "body": "zombie_apprentice/chestplate",
+      "chest": "zombie_apprentice/chestplate",
       "legs": "zombie_apprentice/leggings",
       "feet": "zombie_apprentice/boots"
     },
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "id": "skeleon_apprentice",
+    "id": "skeleton_apprentice",
     "visuals": {
       "type": "skeleton",
       "name": "Skeleton Apprentice"
@@ -61,6 +61,15 @@
       {
         "item": ["adventurers/bow"],
         "chance": 15
+      },
+      {
+        "item": [
+          "skeleton_apprentice/helmet",
+          "skeleton_apprentice/chestplate",
+          "skeleton_apprentice/leggings",
+          "skeleton_apprentice/boots"
+        ],
+        "chance": 25
       }
     ]
   }

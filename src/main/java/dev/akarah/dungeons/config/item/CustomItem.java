@@ -6,6 +6,7 @@ import dev.akarah.dungeons.Main;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -20,6 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 public record CustomItem(
@@ -43,48 +45,55 @@ public record CustomItem(
     }
 
     public ItemStack toItemStack() {
-        var is = ItemStack.of(this.visuals().type());
+        var itemStack = ItemStack.of(this.visuals().type());
+        if(this.visuals().type().equals(Material.BOW)) {
+            itemStack = itemStack.withType(Material.POISONOUS_POTATO);
+            itemStack.setData(DataComponentTypes.ITEM_MODEL, Key.key("minecraft:bow"));
+        }
 
-        setItemId(is, this.key);
-        is.setData(DataComponentTypes.ITEM_NAME, Component.text(this.visuals().name()));
-        is.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData()
+        setItemId(itemStack, this.key);
+        itemStack.setData(DataComponentTypes.ITEM_NAME, Component.text(this.visuals().name()));
+        itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData()
                 .addString(this.key.asString())
                 .build());
-        is.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay()
+        itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay()
                 .addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build());
 
+        var finalItemStack = itemStack;
         this.durability.ifPresentOrElse(
                 durability -> {
-                    is.setData(DataComponentTypes.MAX_DAMAGE, durability);
-                    is.setData(DataComponentTypes.DAMAGE, 0);
+                    finalItemStack.setData(DataComponentTypes.MAX_DAMAGE, durability);
+                    finalItemStack.setData(DataComponentTypes.DAMAGE, 0);
                 },
                 () -> {
-                    is.unsetData(DataComponentTypes.MAX_DAMAGE);
-                    is.unsetData(DataComponentTypes.DAMAGE);
+                    finalItemStack.unsetData(DataComponentTypes.MAX_DAMAGE);
+                    finalItemStack.unsetData(DataComponentTypes.DAMAGE);
                 }
         );
 
-        is.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.itemAttributes()
+
+
+        itemStack.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.itemAttributes()
                 .addModifier(Attribute.ATTACK_SPEED,
                         new AttributeModifier(
                                 Main.getInstance().createKey("atkspd"),
                                 300.0,
                                 AttributeModifier.Operation.ADD_NUMBER)).build());
-        is.unsetData(DataComponentTypes.BLOCKS_ATTACKS);
-        is.unsetData(DataComponentTypes.FOOD);
-        is.setData(DataComponentTypes.RARITY, ItemRarity.COMMON);
+        itemStack.unsetData(DataComponentTypes.BLOCKS_ATTACKS);
+        itemStack.unsetData(DataComponentTypes.FOOD);
+        itemStack.setData(DataComponentTypes.RARITY, ItemRarity.COMMON);
 
         if(this.visuals().type().toString().toLowerCase().contains("sword")) {
-            is.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks().build());
+            itemStack.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks().build());
         }
 
-        this.food.ifPresent(food -> {
-            is.setData(DataComponentTypes.CONSUMABLE,
+        this.food.ifPresentOrElse(food -> {
+            finalItemStack.setData(DataComponentTypes.CONSUMABLE,
                     Consumable.consumable()
                             .consumeSeconds(food.consumeTime())
                             .build()
             );
-            is.setData(DataComponentTypes.FOOD,
+            finalItemStack.setData(DataComponentTypes.FOOD,
                     FoodProperties
                             .food()
                             .canAlwaysEat(true)
@@ -92,10 +101,18 @@ public record CustomItem(
                             .nutrition(food.hunger())
                             .build()
             );
+        }, () -> {
+            finalItemStack.unsetData(DataComponentTypes.FOOD);
+            finalItemStack.unsetData(DataComponentTypes.CONSUMABLE);
         });
 
+
+        var lore = new ArrayList<Component>();
+
         if(!this.stats().innerMap().isEmpty()) {
-            var lore = new ArrayList<Component>();
+            lore.add(Component.text("Gear Score: ").color(TextColor.color(133, 133, 133))
+                    .append(Component.text(this.gearScore()).color(TextColor.color(255, 0, 255))));
+            lore.add(Component.empty());
             lore.add(Component.text("When equipped:").color(TextColor.color(133, 133, 133)));
             for(var entry : this.stats().innerMap().entrySet()) {
                 lore.add(Component.text(" " + entry.getValue() + " " +
@@ -104,13 +121,14 @@ public record CustomItem(
                         .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
                 );
             }
-            is.setData(DataComponentTypes.LORE, ItemLore.lore()
-                    .addLines(lore)
-                    .build());
         }
 
+        itemStack.setData(DataComponentTypes.LORE, ItemLore.lore()
+                .addLines(lore)
+                .build());
 
-        return is;
+
+        return itemStack;
     }
 
     public static void setItemId(ItemStack is, NamespacedKey key) {
@@ -169,5 +187,12 @@ public record CustomItem(
                 Codec.FLOAT.optionalFieldOf("saturation", 0.0f).forGetter(FoodObject::saturation),
                 Codec.FLOAT.optionalFieldOf("consume_time", 1.0f).forGetter(FoodObject::consumeTime)
         ).apply(instance, FoodObject::new));
+    }
+
+    public int gearScore() {
+        return (int) (this.stats.get(Stats.MAX_HEALTH)
+                + this.stats.get(Stats.ARMOR)
+                + this.stats.get(Stats.ATTACK_DAMAGE)
+                + this.stats.get(Stats.ATTACK_SPEED));
     }
 }

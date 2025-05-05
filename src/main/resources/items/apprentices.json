@@ -1,0 +1,107 @@
+[
+  {
+    "id": "zombie_apprentice/sword",
+    "visuals": {
+      "type": "minecraft:wooden_sword",
+      "name": "Zombie Apprentice Sword"
+    },
+    "stats": {
+      "attack_damage": 7
+    },
+    "durability": 250
+  },
+
+  {
+    "id": "zombie_apprentice/helmet",
+    "visuals": {
+      "type": "minecraft:leather_helmet",
+      "name": "Zombie Apprentice Helmet"
+    },
+    "stats": {
+      "armor": 1
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_apprentice/chestplate",
+    "visuals": {
+      "type": "minecraft:leather_chestplate",
+      "name": "Zombie Apprentice Chestplate"
+    },
+    "stats": {
+      "armor": 2
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_apprentice/leggings",
+    "visuals": {
+      "type": "minecraft:leather_leggings",
+      "name": "Zombie Apprentice Leggings"
+    },
+    "stats": {
+      "armor": 2
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_apprentice/boots",
+    "visuals": {
+      "type": "minecraft:leather_boots",
+      "name": "Zombie Apprentice Boots"
+    },
+    "stats": {
+      "armor": 1
+    },
+    "durability": 150
+  },
+
+  {
+    "id": "skeleton_apprentice/helmet",
+    "visuals": {
+      "type": "minecraft:leather_helmet",
+      "name": "Skeleton Apprentice Helmet"
+    },
+    "stats": {
+      "armor": 0.5,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_apprentice/chestplate",
+    "visuals": {
+      "type": "minecraft:leather_chestplate",
+      "name": "Skeleton Apprentice Chestplate"
+    },
+    "stats": {
+      "armor": 0.5,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_apprentice/leggings",
+    "visuals": {
+      "type": "minecraft:leather_leggings",
+      "name": "Skeleton Apprentice Leggings"
+    },
+    "stats": {
+      "armor": 0.5,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_apprentice/boots",
+    "visuals": {
+      "type": "minecraft:leather_boots",
+      "name": "Skeleton Apprentice Boots"
+    },
+    "stats": {
+      "armor": 0.5,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  }
+]

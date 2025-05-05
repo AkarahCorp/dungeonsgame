@@ -6,4 +6,6 @@ public class Stats {
 
     public static String ATTACK_DAMAGE = "attack_damage";
     public static String ATTACK_SPEED = "attack_speed";
+
+    public static String WALK_SPEED = "walk_speed";
 }

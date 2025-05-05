@@ -6,8 +6,8 @@
       "name": "Bread"
     },
     "food": {
-      "hunger": 4,
-      "saturation": 2
+      "hunger": 6,
+      "saturation": 6
     }
   }
 ]
