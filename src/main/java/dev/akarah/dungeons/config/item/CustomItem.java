@@ -25,13 +25,15 @@ public record CustomItem(
         NamespacedKey key,
         Visuals visuals,
         StatsObject stats,
-        Optional<FoodObject> food
+        Optional<FoodObject> food,
+        Optional<Integer> durability
 ) implements Keyed {
     public static Codec<CustomItem> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id").forGetter(CustomItem::key),
             Visuals.CODEC.fieldOf("visuals").forGetter(CustomItem::visuals),
             StatsObject.CODEC.optionalFieldOf("stats", StatsObject.empty()).forGetter(CustomItem::stats),
-            FoodObject.CODEC.optionalFieldOf("food").forGetter(CustomItem::food)
+            FoodObject.CODEC.optionalFieldOf("food").forGetter(CustomItem::food),
+            Codec.INT.optionalFieldOf("durability").forGetter(CustomItem::durability)
     ).apply(instance, CustomItem::new));
 
     @Override
@@ -50,8 +52,17 @@ public record CustomItem(
         is.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay()
                 .addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build());
 
-        is.unsetData(DataComponentTypes.MAX_DAMAGE);
-        is.unsetData(DataComponentTypes.DAMAGE);
+        this.durability.ifPresentOrElse(
+                durability -> {
+                    is.setData(DataComponentTypes.MAX_DAMAGE, durability);
+                    is.setData(DataComponentTypes.DAMAGE, 0);
+                },
+                () -> {
+                    is.unsetData(DataComponentTypes.MAX_DAMAGE);
+                    is.unsetData(DataComponentTypes.DAMAGE);
+                }
+        );
+
         is.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.itemAttributes()
                 .addModifier(Attribute.ATTACK_SPEED,
                         new AttributeModifier(

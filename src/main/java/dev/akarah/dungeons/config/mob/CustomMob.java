@@ -18,10 +18,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public record CustomMob(
         NamespacedKey id,
@@ -130,14 +127,13 @@ public record CustomMob(
     }
 
     record DropEntry(
-            NamespacedKey item,
+            List<NamespacedKey> item,
             double chance,
             int amount
     ) {
         public static Codec<DropEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString)
-                        .fieldOf("item")
-                        .forGetter(DropEntry::item),
+                        .listOf().fieldOf("item").forGetter(DropEntry::item),
                 Codec.DOUBLE.fieldOf("chance").forGetter(DropEntry::chance),
                 Codec.INT.optionalFieldOf("amount", 1).forGetter(DropEntry::amount)
         ).apply(instance, DropEntry::new));
@@ -147,9 +143,8 @@ public record CustomMob(
         for(var entry : this.drops) {
             var rng = Math.random() * 100;
             if(rng <= entry.chance()) {
-                var customItem = Main.getInstance().data().items().get(
-                        entry.item()
-                );
+                var itemSelection = entry.item().get(new Random().nextInt(entry.item.size()));
+                var customItem = Main.getInstance().data().items().get(itemSelection);
                 if(customItem == null) {
                     continue;
                 }

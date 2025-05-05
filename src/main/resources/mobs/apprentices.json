@@ -18,23 +18,13 @@
     },
     "drops": [
       {
-        "item": "zombie_apprentice/sword",
-        "chance": 15
-      },
-      {
-        "item": "zombie_apprentice/helmet",
-        "chance": 15
-      },
-      {
-        "item": "zombie_apprentice/chestplate",
-        "chance": 15
-      },
-      {
-        "item": "zombie_apprentice/leggings",
-        "chance": 15
-      },
-      {
-        "item": "zombie_apprentice/boots",
+        "item": [
+          "zombie_apprentice/sword",
+          "zombie_apprentice/helmet",
+          "zombie_apprentice/chestplate",
+          "zombie_apprentice/leggings",
+          "zombie_apprentice/boots"
+        ],
         "chance": 15
       }
     ]
@@ -54,17 +44,22 @@
     },
     "drops": [
       {
-        "item": "util/arrow",
-        "chance": 30,
-        "amount": 2
+        "item": ["util/arrow"],
+        "chance": 50,
+        "amount": 1
       },
       {
-        "item": "util/arrow",
-        "chance": 30,
-        "amount": 2
+        "item": ["util/arrow"],
+        "chance": 50,
+        "amount": 1
       },
       {
-        "item": "adventurers/bow",
+        "item": ["util/arrow"],
+        "chance": 50,
+        "amount": 1
+      },
+      {
+        "item": ["adventurers/bow"],
         "chance": 15
       }
     ]

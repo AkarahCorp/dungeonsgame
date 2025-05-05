@@ -7,7 +7,8 @@
     },
     "stats": {
       "attack_damage": 7
-    }
+    },
+    "durability": 250
   },
 
   {
@@ -18,7 +19,8 @@
     },
     "stats": {
       "armor": 1
-    }
+    },
+    "durability": 150
   },
   {
     "id": "zombie_apprentice/chestplate",
@@ -28,7 +30,8 @@
     },
     "stats": {
       "armor": 2
-    }
+    },
+    "durability": 150
   },
   {
     "id": "zombie_apprentice/leggings",
@@ -38,7 +41,8 @@
     },
     "stats": {
       "armor": 2
-    }
+    },
+    "durability": 150
   },
   {
     "id": "zombie_apprentice/boots",
@@ -48,6 +52,7 @@
     },
     "stats": {
       "armor": 1
-    }
+    },
+    "durability": 150
   }
 ]

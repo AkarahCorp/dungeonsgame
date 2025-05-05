@@ -17,7 +17,8 @@
     },
     "stats": {
       "attack_damage": 4
-    }
+    },
+    "durability": 200
   },
   {
     "id": "adventurers/helmet",

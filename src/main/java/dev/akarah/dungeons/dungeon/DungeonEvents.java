@@ -1,6 +1,7 @@
 package dev.akarah.dungeons.dungeon;
 
 import dev.akarah.dungeons.Main;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +19,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
@@ -160,6 +163,23 @@ public class DungeonEvents implements Listener {
                 return;
             }
             entry.executeDrops(event.getEntity().getLocation());
+        }
+    }
+
+    @EventHandler
+    public void itemDamage(PlayerItemDamageEvent event) {
+        if(event.getItem().hasData(DataComponentTypes.DAMAGE)) {
+            var dmg = event.getItem().getData(DataComponentTypes.DAMAGE);
+            assert dmg != null;
+
+            var max = event.getItem().getData(DataComponentTypes.MAX_DAMAGE);
+            assert max != null;
+
+            var durability = max - dmg;
+            if(durability - event.getDamage() <= 1) {
+                event.setCancelled(true);
+                event.getItem().setData(DataComponentTypes.DAMAGE, 1);
+            }
         }
     }
 }
