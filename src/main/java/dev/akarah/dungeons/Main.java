@@ -37,6 +37,7 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new GameEvents(), this);
     }
 
     @Override

@@ -139,7 +139,7 @@ public record CustomItem(
     public static NamespacedKey getItemId(ItemStack is) {
         var tag = is.getPersistentDataContainer().get(Main.getInstance().createKey("item/id"), PersistentDataType.STRING);
         if(tag == null) {
-            tag = "akarahnet:none";
+            return null;
         }
         return NamespacedKey.fromString(tag);
     }

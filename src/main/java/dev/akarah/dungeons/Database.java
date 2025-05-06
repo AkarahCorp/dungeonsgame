@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class Database {
@@ -20,6 +21,21 @@ public class Database {
 
             Database.databaseConnection = DriverManager.getConnection(url, props);
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void tryInitializeDb() {
+        var conn = Database.conn();
+        try {
+            conn.prepareStatement("""
+                    create table if not exists players (
+                        uuid text not null,
+                        username text not null,
+                        inventory text not null
+                    )
+                    """).execute();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

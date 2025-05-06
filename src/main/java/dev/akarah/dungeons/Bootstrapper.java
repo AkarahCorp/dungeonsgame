@@ -18,13 +18,10 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Keyed;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -38,6 +35,7 @@ public class Bootstrapper implements PluginBootstrap {
         INSTANCE = this;
 
         Database.tryConnectDb();
+        Database.tryInitializeDb();
 
         searchForRegistry("items", CustomItem.CODEC, this.data.items());
         searchForRegistry("mobs", CustomMob.CODEC, this.data.mobs());
