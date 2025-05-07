@@ -146,7 +146,7 @@ public class GameEvents implements Listener {
                 itemStack.setData(DataComponentTypes.DAMAGE, Integer.parseInt(map.get("damage")));
             }
 
-            itemStack.setAmount(Integer.parseInt(map.getOrDefault("amount", 1)));
+            itemStack.setAmount(Integer.parseInt(map.getOrDefault("amount", "1")));
 
             is.set(Integer.parseInt(map.get("slot")), itemStack);
         }
