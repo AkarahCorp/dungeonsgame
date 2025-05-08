@@ -51,7 +51,7 @@ public class DungeonEvents implements Listener {
         for(var vector : vectors) {
             var adjusted = location.clone().add(vector);
             if(adjusted.getBlock().getType().equals(Material.COAL_BLOCK)
-            && !(list.contains(adjusted))) {
+                    && !(list.contains(adjusted))) {
                 list.add(adjusted);
                 recursivelyFindCoal(adjusted, list);
             }
@@ -85,7 +85,7 @@ public class DungeonEvents implements Listener {
                     chest.open();
 
                     var choices = new String[]{
-                        "food/bread"
+                            "food/bread"
                     };
                     var id = choices[new Random().nextInt(0, choices.length)];
 
@@ -113,15 +113,19 @@ public class DungeonEvents implements Listener {
 
     @EventHandler
     public void shootBow(PlayerInteractEvent event) {
-        var mainItem = event.getPlayer().getInventory().getItem(EquipmentSlot.HAND);
+        try {
+            var mainItem = event.getPlayer().getInventory().getItem(EquipmentSlot.HAND);
 
-        if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR)
-                && event.getHand() == EquipmentSlot.HAND
-                && CustomItem.getItemId(mainItem).toString().contains("bow")
-        && Main.getInstance().data().statsHolder().getHitCooldown(event.getPlayer()) <= 0) {
-            Main.getInstance().data().statsHolder()
-                            .setHitCooldown(event.getPlayer(), 10);
-            event.getPlayer().launchProjectile(Arrow.class);
+            if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR)
+                    && event.getHand() == EquipmentSlot.HAND
+                    && Objects.requireNonNull(CustomItem.getItemId(mainItem)).toString().contains("bow")
+                    && Main.getInstance().data().statsHolder().getHitCooldown(event.getPlayer()) <= 0) {
+                Main.getInstance().data().statsHolder()
+                        .setHitCooldown(event.getPlayer(), 10);
+                event.getPlayer().launchProjectile(Arrow.class);
+            }
+        } catch (NullPointerException ignored) {
+
         }
     }
 
