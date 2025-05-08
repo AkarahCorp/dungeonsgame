@@ -1,6 +1,7 @@
 package dev.akarah.dungeons;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +21,7 @@ public class Database {
             String url = (String) props.remove("url");
 
             Database.databaseConnection = DriverManager.getConnection(url, props);
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,19 +1,21 @@
 package dev.akarah.dungeons.config;
 
-import com.google.common.collect.Iterators;
-import io.papermc.paper.registry.TypedKey;
-import io.papermc.paper.registry.event.WritableRegistry;
-import io.papermc.paper.registry.tag.Tag;
-import io.papermc.paper.registry.tag.TagKey;
-import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
-import java.util.stream.Stream;
+import com.google.common.collect.Iterators;
+
+import io.papermc.paper.registry.tag.Tag;
+import io.papermc.paper.registry.tag.TagKey;
 
 public class DataRegistry<T extends Keyed> {
     Map<NamespacedKey, T> keyToT = new HashMap<>();
