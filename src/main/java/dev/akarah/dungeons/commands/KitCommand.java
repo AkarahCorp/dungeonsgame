@@ -29,11 +29,6 @@ public class KitCommand {
                                                 Main.getInstance().data().items().get(NamespacedKey.minecraft("adventurers/helmet"))
                                         ).toItemStack()
                                 );
-                                p.getInventory().addItem(
-                                        Objects.requireNonNull(
-                                                Main.getInstance().data().items().get(NamespacedKey.minecraft("adventurers/pickaxe"))
-                                        ).toItemStack()
-                                );
                             }
                             return 0;
                         })

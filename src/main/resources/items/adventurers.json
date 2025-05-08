@@ -29,12 +29,5 @@
     "stats": {
       "armor": 1
     }
-  },
-  {
-    "id": "adventurers/pickaxe",
-    "visuals": {
-      "type": "minecraft:iron_pickaxe",
-      "name": "Adventurers' Pickaxe"
-    }
   }
 ]

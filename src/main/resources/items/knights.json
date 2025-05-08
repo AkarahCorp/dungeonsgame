@@ -1,0 +1,119 @@
+[
+  {
+    "id": "zombie_knight/sword",
+    "visuals": {
+      "type": "minecraft:wooden_sword",
+      "name": "Zombie Knight Sword"
+    },
+    "stats": {
+      "attack_damage": 10
+    },
+    "durability": 250
+  },
+  {
+    "id": "skeleton_knight/bow",
+    "visuals": {
+      "type": "minecraft:bow",
+      "name": "Skeleton Knight Bow"
+    },
+    "stats": {
+      "attack_damage": 7
+    },
+    "durability": 250
+  },
+
+  {
+    "id": "zombie_knight/helmet",
+    "visuals": {
+      "type": "minecraft:chainmail_helmet",
+      "name": "Zombie Knight Helmet"
+    },
+    "stats": {
+      "armor": 3
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_knight/chestplate",
+    "visuals": {
+      "type": "minecraft:chainmail_chestplate",
+      "name": "Zombie Knight Chestplate"
+    },
+    "stats": {
+      "armor": 4
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_knight/leggings",
+    "visuals": {
+      "type": "minecraft:chainmail_leggings",
+      "name": "Zombie Knight Leggings"
+    },
+    "stats": {
+      "armor": 4
+    },
+    "durability": 150
+  },
+  {
+    "id": "zombie_knight/boots",
+    "visuals": {
+      "type": "minecraft:chainmail_boots",
+      "name": "Zombie Knight Boots"
+    },
+    "stats": {
+      "armor": 3
+    },
+    "durability": 150
+  },
+
+  {
+    "id": "skeleton_knight/helmet",
+    "visuals": {
+      "type": "minecraft:chainmail_helmet",
+      "name": "Skeleton Knight Helmet"
+    },
+    "stats": {
+      "armor": 1,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_knight/chestplate",
+    "visuals": {
+      "type": "minecraft:chainmail_chestplate",
+      "name": "Skeleton Knight Chestplate"
+    },
+    "stats": {
+      "armor": 1,
+      "walk_speed": 0.2,
+      "attack_damage": 1
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_knight/leggings",
+    "visuals": {
+      "type": "minecraft:chainmail_leggings",
+      "name": "Skeleton Knight Leggings"
+    },
+    "stats": {
+      "armor": 1,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  },
+  {
+    "id": "skeleton_knight/boots",
+    "visuals": {
+      "type": "minecraft:chainmail_boots",
+      "name": "Skeleton Knight Boots"
+    },
+    "stats": {
+      "armor": 1,
+      "walk_speed": 0.2
+    },
+    "durability": 150
+  }
+]

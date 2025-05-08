@@ -15,6 +15,7 @@ import java.util.UUID;
 public class PlayerStatsHolder {
     HashMap<UUID, StatsObject> playerStats = new HashMap<>();
     HashMap<UUID, Integer> hitCooldown = new HashMap<>();
+    HashMap<UUID, Integer> gearScore = new HashMap<>();
 
     public StatsObject statsFor(UUID uuid) {
         return playerStats.get(uuid);
@@ -28,8 +29,8 @@ public class PlayerStatsHolder {
         playerStats.put(p.getUniqueId(), stats);
     }
 
-    public void setStats(UUID uuid, StatsObject stats) {
-        playerStats.put(uuid, stats);
+    public int getGearScore(UUID uuid) {
+        return gearScore.getOrDefault(uuid, 0);
     }
 
     public void setHitCooldown(Player p, int cd) {
@@ -48,6 +49,7 @@ public class PlayerStatsHolder {
             );
 
             var stats = StatsObject.baseStats();
+            var gearScore = 0;
             var items = new ItemStack[]{
                     p.getInventory().getItem(EquipmentSlot.HEAD),
                     p.getInventory().getItem(EquipmentSlot.CHEST),
@@ -63,6 +65,7 @@ public class PlayerStatsHolder {
                     continue;
                 }
                 stats = stats.add(customItemFromInv.stats());
+                gearScore += customItemFromInv.gearScore();
             }
 
             try {
@@ -76,6 +79,7 @@ public class PlayerStatsHolder {
             }
 
             this.setStats(p, stats);
+            this.gearScore.put(p.getUniqueId(), gearScore);
         }
     }
 }

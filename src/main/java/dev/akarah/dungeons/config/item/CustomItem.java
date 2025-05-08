@@ -6,10 +6,14 @@ import dev.akarah.dungeons.Main;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
+import io.papermc.paper.registry.set.RegistrySet;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -21,7 +25,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 
 public record CustomItem(
@@ -127,6 +130,18 @@ public record CustomItem(
                 .addLines(lore)
                 .build());
 
+        itemStack.unsetData(DataComponentTypes.TOOL);
+        itemStack.setData(DataComponentTypes.TOOL,
+                Tool.tool()
+                        .damagePerBlock(1)
+                        .addRule(Tool.rule(
+                                RegistrySet.keySet(RegistryKey.BLOCK, TypedKey.create(RegistryKey.BLOCK, Key.key("minecraft:coal_block"))),
+                                4f,
+                                TriState.TRUE
+                        ))
+                .build()
+        );
+
 
         return itemStack;
     }
@@ -190,9 +205,10 @@ public record CustomItem(
     }
 
     public int gearScore() {
-        return (int) (this.stats.get(Stats.MAX_HEALTH)
-                + this.stats.get(Stats.ARMOR)
-                + this.stats.get(Stats.ATTACK_DAMAGE)
-                + this.stats.get(Stats.ATTACK_SPEED));
+        return (int) ((this.stats.get(Stats.MAX_HEALTH) * 12)
+                + (this.stats.get(Stats.ARMOR) * 10)
+                + (this.stats.get(Stats.ATTACK_DAMAGE) * 6)
+                + (this.stats.get(Stats.ATTACK_SPEED) * 6)
+                + (this.stats.get(Stats.WALK_SPEED) * 12));
     }
 }

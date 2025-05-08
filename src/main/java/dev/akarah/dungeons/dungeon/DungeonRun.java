@@ -1,6 +1,7 @@
 package dev.akarah.dungeons.dungeon;
 
 import dev.akarah.dungeons.Main;
+import dev.akarah.dungeons.config.item.PlayerStatsHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +27,15 @@ public record DungeonRun(
         List<UUID> members,
         AtomicInteger failures
 ) {
+    public int sumGearScores() {
+        var sumScore = 0;
+
+        for(var member : members) {
+            sumScore += Main.getInstance().data().statsHolder().getGearScore(member);
+        }
+
+        return sumScore;
+    }
     public void start() {
         origin.getChunk().load(true);
         origin.getChunk().setForceLoaded(true);
@@ -112,10 +122,20 @@ public record DungeonRun(
                     var pos = armorStand.getLocation();
                     armorStand.remove();
 
-                    var choices = new String[]{
-                            "zombie_apprentice",
-                            "skeleton_apprentice"
-                    };
+                    var choices = new String[]{};
+
+                    if(this.sumGearScores() <= 50) {
+                        choices = new String[]{
+                                "zombie_apprentice",
+                                "skeleton_apprentice"
+                        };
+                    } else {
+                        choices = new String[]{
+                                "zombie_knight",
+                                "skeleton_knight"
+                        };
+                    }
+
                     var id = choices[new Random().nextInt(0, choices.length)];
                     var mob = Main.getInstance().data().mobs().get(
                             Objects.requireNonNull(NamespacedKey.fromString(id))

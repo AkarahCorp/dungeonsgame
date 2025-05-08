@@ -1,0 +1,73 @@
+[
+  {
+    "id": "zombie_knight",
+    "visuals": {
+      "type": "zombie",
+      "name": "Zombie Knight"
+    },
+    "stats": {
+      "max_health": 35,
+      "attack_damage": 4
+    },
+    "equipment": {
+      "main_hand": "zombie_knight/sword",
+      "head": "zombie_knight/helmet",
+      "chest": "zombie_knight/chestplate",
+      "legs": "zombie_knight/leggings",
+      "feet": "zombie_knight/boots"
+    },
+    "drops": [
+      {
+        "item": [
+          "zombie_knight/sword",
+          "zombie_knight/helmet",
+          "zombie_knight/chestplate",
+          "zombie_knight/leggings",
+          "zombie_knight/boots"
+        ],
+        "chance": 25
+      }
+    ]
+  },
+  {
+    "id": "skeleton_knight",
+    "visuals": {
+      "type": "skeleton",
+      "name": "Skeleton Knight"
+    },
+    "stats": {
+      "max_health": 30,
+      "attack_damage": 3
+    },
+    "equipment": {
+      "main_hand": "adventurers/bow"
+    },
+    "drops": [
+      {
+        "item": ["util/arrow"],
+        "chance": 70,
+        "amount": 1
+      },
+      {
+        "item": ["util/arrow"],
+        "chance": 70,
+        "amount": 1
+      },
+      {
+        "item": ["util/arrow"],
+        "chance": 70,
+        "amount": 1
+      },
+      {
+        "item": [
+          "skeleton_knight/bow",
+          "skeleton_knight/helmet",
+          "skeleton_knight/chestplate",
+          "skeleton_knight/leggings",
+          "skeleton_knight/boots"
+        ],
+        "chance": 25
+      }
+    ]
+  }
+]
