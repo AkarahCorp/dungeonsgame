@@ -16,6 +16,8 @@ public class PlayerStatsHolder {
     HashMap<UUID, StatsObject> playerStats = new HashMap<>();
     HashMap<UUID, Integer> hitCooldown = new HashMap<>();
     HashMap<UUID, Integer> gearScore = new HashMap<>();
+    HashMap<UUID, Integer> experience = new HashMap<>();
+    HashMap<UUID, Integer> essence = new HashMap<>();
 
     public StatsObject statsFor(UUID uuid) {
         return playerStats.get(uuid);
@@ -39,6 +41,22 @@ public class PlayerStatsHolder {
 
     public int getHitCooldown(Player p) {
         return hitCooldown.getOrDefault(p.getUniqueId(), 1);
+    }
+
+    public void setXP(Player p, int cd) {
+        experience.put(p.getUniqueId(), cd);
+    }
+
+    public int getXP(Player p) {
+        return experience.getOrDefault(p.getUniqueId(), 0);
+    }
+
+    public void setEssence(Player p, int cd) {
+        essence.put(p.getUniqueId(), cd);
+    }
+
+    public int getEssence(Player p) {
+        return essence.getOrDefault(p.getUniqueId(), 0);
     }
 
     public void loopPlayerStats() {

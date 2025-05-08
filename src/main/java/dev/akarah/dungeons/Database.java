@@ -36,6 +36,18 @@ public class Database {
                         inventory text not null
                     )
                     """).execute();
+
+            conn.prepareStatement("""
+                    alter table players 
+                        add column if not exists experience 
+                        int not null default 0;
+                    """).execute();
+
+            conn.prepareStatement("""
+                alter table players 
+                    add column if not exists essence
+                    int not null default 0;
+                """).execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

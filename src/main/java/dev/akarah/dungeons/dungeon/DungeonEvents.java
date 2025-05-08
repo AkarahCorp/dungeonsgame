@@ -3,6 +3,7 @@ package dev.akarah.dungeons.dungeon;
 import dev.akarah.dungeons.Main;
 import dev.akarah.dungeons.config.item.CustomItem;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+
+import dev.akarah.dungeons.config.mob.CustomMob;
 
 public class DungeonEvents implements Listener {
 
@@ -75,11 +78,12 @@ public class DungeonEvents implements Listener {
 
     @EventHandler
     public void openChest(PlayerInteractEvent event) {
+        var clickedBlock = event.getClickedBlock();
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                && event.getClickedBlock() != null
-                && event.getClickedBlock().getType().equals(Material.CHEST)) {
+                && clickedBlock != null
+                && clickedBlock.getType().equals(Material.CHEST)) {
             event.setCancelled(true);
-            var blockState = event.getClickedBlock().getState();
+            var blockState = clickedBlock.getState();
             if(blockState instanceof Chest chest) {
                 if(!chest.isOpen()) {
                     chest.open();
@@ -200,6 +204,27 @@ public class DungeonEvents implements Listener {
                 event.setCancelled(true);
                 event.getItem().setData(DataComponentTypes.DAMAGE, 1);
             }
+        }
+    }
+
+    @EventHandler
+    public void playerKillEntity(EntityDeathEvent event) {
+        if(event.getEntity().getKiller() != null) {
+            var player = event.getEntity().getKiller();
+
+            var id = CustomMob.getEntityId(event.getEntity());
+            if(id == null) {
+                return;
+            }
+
+            var mob = Main.getInstance().data().mobs().get(id);
+            if(mob == null) {
+                return;
+            }
+
+            var sh = Main.getInstance().data().statsHolder();
+            sh.setXP(player, sh.getXP(player) + mob.staticRewards().xp());
+            sh.setEssence(player, sh.getEssence(player) + mob.staticRewards().essence());
         }
     }
 }

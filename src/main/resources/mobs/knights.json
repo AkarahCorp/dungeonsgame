@@ -27,7 +27,11 @@
         ],
         "chance": 25
       }
-    ]
+    ],
+    "rewards": {
+      "xp": 10,
+      "essence": 2
+    }
   },
   {
     "id": "skeleton_knight",
@@ -44,17 +48,23 @@
     },
     "drops": [
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 70,
         "amount": 1
       },
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 70,
         "amount": 1
       },
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 70,
         "amount": 1
       },
@@ -68,6 +78,10 @@
         ],
         "chance": 25
       }
-    ]
+    ],
+    "rewards": {
+      "xp": 10,
+      "essence": 2
+    }
   }
 ]

@@ -4,6 +4,9 @@
     "visuals": {
       "type": "minecraft:arrow",
       "name": "Arrow"
+    },
+    "scrap_for": {
+      "essence": 4
     }
   }
 ]

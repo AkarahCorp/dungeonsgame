@@ -1,16 +1,19 @@
 package dev.akarah.dungeons;
 
-import dev.akarah.dungeons.config.GlobalData;
-import dev.akarah.dungeons.config.item.InventoryEvents;
-import dev.akarah.dungeons.dungeon.DungeonEvents;
-import dev.akarah.dungeons.dungeon.DungeonManager;
+import java.util.Objects;
+
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
+import dev.akarah.dungeons.config.GlobalData;
+import dev.akarah.dungeons.config.item.InventoryEvents;
+import dev.akarah.dungeons.dungeon.DungeonEvents;
+import dev.akarah.dungeons.dungeon.DungeonManager;
+import dev.akarah.dungeons.inventory.MainMenu;
+import dev.akarah.dungeons.inventory.ScrapMenu;
 
 public final class Main extends JavaPlugin {
     static Main MAIN;
@@ -38,6 +41,9 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DungeonEvents(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryEvents(), this);
         Bukkit.getPluginManager().registerEvents(new GameEvents(), this);
+
+        Bukkit.getPluginManager().registerEvents(new MainMenu.Handler(), this);
+        Bukkit.getPluginManager().registerEvents(new ScrapMenu.Handler(), this);
     }
 
     @Override

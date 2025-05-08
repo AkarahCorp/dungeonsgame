@@ -1,11 +1,10 @@
 package dev.akarah.dungeons.config.mob;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.akarah.dungeons.Main;
-import dev.akarah.dungeons.config.item.Stats;
-import dev.akarah.dungeons.config.item.StatsObject;
-import net.kyori.adventure.text.Component;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+
 import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -18,26 +17,41 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import dev.akarah.dungeons.Main;
+import dev.akarah.dungeons.config.item.Stats;
+import dev.akarah.dungeons.config.item.StatsObject;
+import net.kyori.adventure.text.Component;
 
 public record CustomMob(
         NamespacedKey id,
         StatsObject stats,
         Visuals visuals,
         Optional<Equipment> equipment,
-        List<DropEntry> drops
+        List<DropEntry> drops,
+        StatAwards staticRewards
 ) implements Keyed {
     public static Codec<CustomMob> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id").forGetter(CustomMob::id),
-            StatsObject.CODEC.fieldOf("stats").forGetter(CustomMob::stats),
-            Visuals.CODEC.fieldOf("visuals").forGetter(CustomMob::visuals),
-            Equipment.CODEC.optionalFieldOf("equipment").forGetter(CustomMob::equipment),
-            DropEntry.CODEC.listOf().optionalFieldOf("drops", List.of()).forGetter(CustomMob::drops)
+        Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id").forGetter(CustomMob::id),
+        StatsObject.CODEC.fieldOf("stats").forGetter(CustomMob::stats),
+        Visuals.CODEC.fieldOf("visuals").forGetter(CustomMob::visuals),
+        Equipment.CODEC.optionalFieldOf("equipment").forGetter(CustomMob::equipment),
+        DropEntry.CODEC.listOf().optionalFieldOf("drops", List.of()).forGetter(CustomMob::drops),
+        StatAwards.CODEC.optionalFieldOf("rewards", new StatAwards(0, 0)).forGetter(CustomMob::staticRewards)
     ).apply(instance, CustomMob::new));
 
     @Override
     public @NotNull NamespacedKey getKey() {
         return this.id;
+    }
+
+    public static NamespacedKey getEntityId(Entity entity) {
+        return NamespacedKey.fromString(
+            entity.getPersistentDataContainer()
+                .getOrDefault(Main.getInstance().createKey("entity/id"), PersistentDataType.STRING, "")
+        );
     }
 
     public void spawn(Location location) {
@@ -47,13 +61,14 @@ public record CustomMob(
             return;
         }
         var entity = location.getWorld().spawnEntity(
-                location,
-                et
+            location,
+            et
         );
         entity.setCustomNameVisible(true);
         entity.customName(Component.text(this.visuals().name()));
         entity.getPersistentDataContainer()
                 .set(Main.getInstance().createKey("entity/id"), PersistentDataType.STRING, this.id.toString());
+
         if(entity instanceof LivingEntity le) {
             Objects.requireNonNull(le.getEquipment()).clear();
 
@@ -70,13 +85,13 @@ public record CustomMob(
             Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE))
                     .setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE));
 
-            this.equipment().ifPresent(equipment -> {
-                equipment.head().ifPresent(item -> applyEquipment(le, EquipmentSlot.HEAD, item));
-                equipment.body.ifPresent(item -> applyEquipment(le, EquipmentSlot.BODY, item));
-                equipment.legs.ifPresent(item -> applyEquipment(le, EquipmentSlot.LEGS, item));
-                equipment.feet.ifPresent(item -> applyEquipment(le, EquipmentSlot.FEET, item));
-                equipment.mainHand.ifPresent(item -> applyEquipment(le, EquipmentSlot.HAND, item));
-                equipment.offHand.ifPresent(item -> applyEquipment(le, EquipmentSlot.OFF_HAND, item));
+            this.equipment().ifPresent(equipmentObject -> {
+                equipmentObject.head().ifPresent(item -> applyEquipment(le, EquipmentSlot.HEAD, item));
+                equipmentObject.body().ifPresent(item -> applyEquipment(le, EquipmentSlot.BODY, item));
+                equipmentObject.legs().ifPresent(item -> applyEquipment(le, EquipmentSlot.LEGS, item));
+                equipmentObject.feet().ifPresent(item -> applyEquipment(le, EquipmentSlot.FEET, item));
+                equipmentObject.mainHand().ifPresent(item -> applyEquipment(le, EquipmentSlot.HAND, item));
+                equipmentObject.offHand().ifPresent(item -> applyEquipment(le, EquipmentSlot.OFF_HAND, item));
             });
         }
     }
@@ -103,12 +118,12 @@ public record CustomMob(
     }
 
     record Equipment(
-            Optional<NamespacedKey> head,
-            Optional<NamespacedKey> body,
-            Optional<NamespacedKey> legs,
-            Optional<NamespacedKey> feet,
-            Optional<NamespacedKey> mainHand,
-            Optional<NamespacedKey> offHand
+        Optional<NamespacedKey> head,
+        Optional<NamespacedKey> body,
+        Optional<NamespacedKey> legs,
+        Optional<NamespacedKey> feet,
+        Optional<NamespacedKey> mainHand,
+        Optional<NamespacedKey> offHand
     ) {
         public static Codec<Equipment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).optionalFieldOf("head")
@@ -126,7 +141,7 @@ public record CustomMob(
         ).apply(instance, Equipment::new));
     }
 
-    record DropEntry(
+    public record DropEntry(
             List<NamespacedKey> item,
             double chance,
             int amount
@@ -137,6 +152,20 @@ public record CustomMob(
                 Codec.DOUBLE.fieldOf("chance").forGetter(DropEntry::chance),
                 Codec.INT.optionalFieldOf("amount", 1).forGetter(DropEntry::amount)
         ).apply(instance, DropEntry::new));
+
+        public List<NamespacedKey> item() {
+            return item;
+        }
+    }
+
+    public record StatAwards(
+        int xp,
+        int essence
+    ) {
+        public static Codec<StatAwards> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.optionalFieldOf("xp", 0).forGetter(StatAwards::xp),
+            Codec.INT.optionalFieldOf("essence", 0).forGetter(StatAwards::essence)
+        ).apply(instance, StatAwards::new));
     }
 
     public void executeDrops(Location location) {

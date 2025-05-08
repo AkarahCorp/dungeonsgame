@@ -8,9 +8,11 @@
     "stats": {
       "attack_damage": 7
     },
-    "durability": 250
+    "durability": 250,
+    "scrap_for": {
+      "essence": 2
+    }
   },
-
   {
     "id": "zombie_apprentice/helmet",
     "visuals": {
@@ -20,7 +22,10 @@
     "stats": {
       "armor": 1
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "zombie_apprentice/chestplate",
@@ -31,7 +36,10 @@
     "stats": {
       "armor": 2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "zombie_apprentice/leggings",
@@ -42,7 +50,10 @@
     "stats": {
       "armor": 2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "zombie_apprentice/boots",
@@ -53,9 +64,11 @@
     "stats": {
       "armor": 1
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
-
   {
     "id": "skeleton_apprentice/helmet",
     "visuals": {
@@ -66,7 +79,10 @@
       "armor": 0.5,
       "walk_speed": 0.2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "skeleton_apprentice/chestplate",
@@ -78,7 +94,10 @@
       "armor": 0.5,
       "walk_speed": 0.2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "skeleton_apprentice/leggings",
@@ -90,7 +109,10 @@
       "armor": 0.5,
       "walk_speed": 0.2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   },
   {
     "id": "skeleton_apprentice/boots",
@@ -102,6 +124,9 @@
       "armor": 0.5,
       "walk_speed": 0.2
     },
-    "durability": 150
+    "durability": 150,
+    "scrap_for": {
+      "essence": 2
+    }
   }
 ]

@@ -46,6 +46,18 @@ public class GameEvents implements Listener {
                 event.getPlayer().getInventory().setItem(idx, item);
                 idx += 1;
             }
+
+            try {
+                var experience = playerResult.getInt("experience");
+                Main.getInstance().data().statsHolder()
+                    .setXP(event.getPlayer(), experience);
+
+                var essence = playerResult.getInt("essence");
+                Main.getInstance().data().statsHolder()
+                    .setEssence(event.getPlayer(), essence);
+            } catch(SQLException ignored) {
+
+            }
         } catch (SQLException e) {
             // failed to get player, just insert a default inventory
             event.getPlayer().getInventory().clear();
@@ -56,27 +68,26 @@ public class GameEvents implements Listener {
     public void onLeave(PlayerQuitEvent event) {
         try {
             var inventory = GameEvents.getInventoryString(event.getPlayer().getInventory());
-            try {
-                Database.conn().prepareStatement("""
-                        delete from players
-                            where uuid = '{}';
-                        """
-                        .replaceFirst("\\{}", event.getPlayer().getUniqueId().toString()))
-                        .execute();
-            } catch (SQLException ignored) {
-
-            }
+            var sh = Main.getInstance().data().statsHolder();
 
             var q = """
-                    insert into players (uuid, username, inventory) values (
+                    delete from players
+                        where uuid = '{0}';
+
+                    insert into players (uuid, username, inventory, experience, essence) values (
                         '{1}',
                         '{2}',
-                        '{3}'
+                        '{3}',
+                        {4},
+                        {5}
                     );
                     """
+                    .replaceFirst("\\{0}", event.getPlayer().getUniqueId().toString())
                     .replaceFirst("\\{1}", event.getPlayer().getUniqueId().toString())
                     .replaceFirst("\\{2}", event.getPlayer().getName())
-                    .replaceFirst("\\{3}", inventory);
+                    .replaceFirst("\\{3}", inventory)
+                    .replaceFirst("\\{4}", Integer.toString(sh.getXP(event.getPlayer())))
+                    .replaceFirst("\\{5}", Integer.toString(sh.getEssence(event.getPlayer())));
 
             System.out.println(q);
             Database.conn().prepareStatement(q).execute();

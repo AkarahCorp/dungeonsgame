@@ -17,6 +17,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import dev.akarah.dungeons.Main;
+import dev.akarah.dungeons.config.mob.CustomMob;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BlocksAttacks;
 import io.papermc.paper.datacomponent.item.Consumable;
@@ -40,16 +41,19 @@ public record CustomItem(
         Visuals visuals,
         StatsObject stats,
         Optional<FoodObject> food,
-        Optional<Integer> durability) implements Keyed {
+        Optional<Integer> durability,
+        CustomMob.StatAwards scrapAwards    
+    ) implements Keyed {
 
     public static Codec<CustomItem> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id")
-                    .forGetter(CustomItem::key),
-            Visuals.CODEC.fieldOf("visuals").forGetter(CustomItem::visuals),
-            StatsObject.CODEC.optionalFieldOf("stats", StatsObject.empty()).forGetter(CustomItem::stats),
-            FoodObject.CODEC.optionalFieldOf("food").forGetter(CustomItem::food),
-            Codec.INT.optionalFieldOf("durability").forGetter(CustomItem::durability))
-            .apply(instance, CustomItem::new));
+        Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id")
+                .forGetter(CustomItem::key),
+        Visuals.CODEC.fieldOf("visuals").forGetter(CustomItem::visuals),
+        StatsObject.CODEC.optionalFieldOf("stats", StatsObject.empty()).forGetter(CustomItem::stats),
+        FoodObject.CODEC.optionalFieldOf("food").forGetter(CustomItem::food),
+        Codec.INT.optionalFieldOf("durability").forGetter(CustomItem::durability),
+        CustomMob.StatAwards.CODEC.optionalFieldOf("scrap_for", new CustomMob.StatAwards(0, 0)).forGetter(CustomItem::scrapAwards)
+    ).apply(instance, CustomItem::new));
 
     @Override
     public @NotNull NamespacedKey getKey() {

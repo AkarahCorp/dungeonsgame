@@ -27,7 +27,11 @@
         ],
         "chance": 25
       }
-    ]
+    ],
+    "rewards": {
+      "xp": 5,
+      "essence": 1
+    }
   },
   {
     "id": "skeleton_apprentice",
@@ -44,22 +48,30 @@
     },
     "drops": [
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 50,
         "amount": 1
       },
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 50,
         "amount": 1
       },
       {
-        "item": ["util/arrow"],
+        "item": [
+          "util/arrow"
+        ],
         "chance": 50,
         "amount": 1
       },
       {
-        "item": ["adventurers/bow"],
+        "item": [
+          "adventurers/bow"
+        ],
         "chance": 15
       },
       {
@@ -71,6 +83,10 @@
         ],
         "chance": 25
       }
-    ]
+    ],
+    "rewards": {
+      "xp": 5,
+      "essence": 1
+    }
   }
 ]
