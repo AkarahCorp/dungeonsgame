@@ -1,0 +1,27 @@
+[
+  {
+    "id": "zombie_lord",
+    "visuals": {
+      "type": "zombie",
+      "name": "Zombie Lord",
+      "genre": "boss"
+    },
+    "stats": {
+      "max_health": 60,
+      "attack_damage": 5
+    },
+    "equipment": {},
+    "drops": [
+
+    ],
+    "rewards": {
+      "xp": 20,
+      "essence": 5
+    },
+    "spawn_rules": {
+      "min_score": 0,
+      "max_score": 10000,
+      "genre": "boss"
+    }
+  }
+]

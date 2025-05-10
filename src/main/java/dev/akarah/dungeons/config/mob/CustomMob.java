@@ -31,7 +31,8 @@ public record CustomMob(
         Visuals visuals,
         Optional<Equipment> equipment,
         List<DropEntry> drops,
-        StatAwards staticRewards
+        StatAwards staticRewards,
+        SpawnRules spawnRules
 ) implements Keyed {
     public static Codec<CustomMob> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("id").forGetter(CustomMob::id),
@@ -39,7 +40,8 @@ public record CustomMob(
         Visuals.CODEC.fieldOf("visuals").forGetter(CustomMob::visuals),
         Equipment.CODEC.optionalFieldOf("equipment").forGetter(CustomMob::equipment),
         DropEntry.CODEC.listOf().optionalFieldOf("drops", List.of()).forGetter(CustomMob::drops),
-        StatAwards.CODEC.optionalFieldOf("rewards", new StatAwards(0, 0)).forGetter(CustomMob::staticRewards)
+        StatAwards.CODEC.optionalFieldOf("rewards", new StatAwards(0, 0)).forGetter(CustomMob::staticRewards),
+        SpawnRules.CODEC.fieldOf("spawn_rules").forGetter(CustomMob::spawnRules)
     ).apply(instance, CustomMob::new));
 
     @Override
@@ -81,6 +83,8 @@ public record CustomMob(
             Objects.requireNonNull(le.getAttribute(Attribute.MAX_HEALTH))
                     .setBaseValue(this.stats().get(Stats.MAX_HEALTH));
 
+            le.heal(1000000);
+
             le.registerAttribute(Attribute.ATTACK_DAMAGE);
             Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE))
                     .setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE));
@@ -109,11 +113,13 @@ public record CustomMob(
 
     record Visuals(
             String name,
-            NamespacedKey entityType
+            NamespacedKey entityType,
+            Optional<NamespacedKey> mobGenre
     ) {
         public static Codec<Visuals> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("name").forGetter(Visuals::name),
-                Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("type").forGetter(Visuals::entityType)
+                Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).fieldOf("type").forGetter(Visuals::entityType),
+                Codec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString).optionalFieldOf("genre").forGetter(Visuals::mobGenre)
         ).apply(instance, Visuals::new));
     }
 
@@ -184,5 +190,17 @@ public record CustomMob(
                 );
             }
         }
+    }
+
+    public record SpawnRules(
+            int minScore,
+            int maxScore,
+            String mobGenre
+    ) {
+        public static Codec<SpawnRules> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.INT.fieldOf("min_score").forGetter(SpawnRules::minScore),
+                Codec.INT.fieldOf("max_score").forGetter(SpawnRules::maxScore),
+                Codec.STRING.optionalFieldOf("genre", "").forGetter(SpawnRules::mobGenre)
+        ).apply(instance, SpawnRules::new));
     }
 }

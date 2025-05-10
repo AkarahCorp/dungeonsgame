@@ -31,6 +31,10 @@
     "rewards": {
       "xp": 5,
       "essence": 1
+    },
+    "spawn_rules": {
+      "min_score": 0,
+      "max_score": 50
     }
   },
   {
@@ -87,6 +91,10 @@
     "rewards": {
       "xp": 5,
       "essence": 1
+    },
+    "spawn_rules": {
+      "min_score": 0,
+      "max_score": 50
     }
   }
 ]

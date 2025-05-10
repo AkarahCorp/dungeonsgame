@@ -1,10 +1,7 @@
 package dev.akarah.dungeons.config;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.bukkit.Keyed;
@@ -64,5 +61,15 @@ public class DataRegistry<T extends Keyed> {
     @Override
     public String toString() {
         return this.keyToT.toString();
+    }
+
+    public List<T> getAllOf(Predicate<T> predicate) {
+        var list = new ArrayList<T>();
+        for(var entry : this.keyToT.entrySet()) {
+            if(predicate.test(entry.getValue())) {
+                list.add(entry.getValue());
+            }
+        }
+        return list;
     }
 }

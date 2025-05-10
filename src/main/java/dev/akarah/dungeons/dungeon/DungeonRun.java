@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -120,27 +122,27 @@ public record DungeonRun(
                     var pos = armorStand.getLocation();
                     armorStand.remove();
 
-                    String[] choices;
-
-                    if (this.sumGearScores() <= 50) {
-                        choices = new String[] {
-                                "zombie_apprentice",
-                                "skeleton_apprentice"
-                        };
-                    } else {
-                        choices = new String[] {
-                                "zombie_knight",
-                                "skeleton_knight"
-                        };
+                    var sumScore = this.sumGearScores();
+                    var componentName = armorStand.customName();
+                    if(componentName == null) {
+                        componentName = Component.empty();
                     }
+                    var plainTextName = PlainTextComponentSerializer.plainText().serialize(componentName);
 
-                    var id = choices[new Random().nextInt(0, choices.length)];
-                    var mob = Main.getInstance().data().mobs().get(
-                            Objects.requireNonNull(NamespacedKey.fromString(id)));
-                    if (mob == null) {
-                        return;
+                    var stringChoices = Main.getInstance().data().mobs()
+                        .getAllOf(mob ->
+                            mob.spawnRules().mobGenre().equals(plainTextName)
+                                && sumScore >= mob.spawnRules().minScore()
+                                && sumScore <= mob.spawnRules().maxScore()
+                        );
+
+                    try {
+                        var mob = stringChoices.get(new Random().nextInt(0, stringChoices.size()));
+                        mob.spawn(pos);
+                    } catch (IllegalArgumentException ignored) {
+                        // this can be ignored, this can only happen if a mob doesn't exist in the entry for the
+                        // specified requirements
                     }
-                    mob.spawn(pos);
                 }
             }
         }
