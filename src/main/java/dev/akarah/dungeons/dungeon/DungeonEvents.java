@@ -133,7 +133,7 @@ public class DungeonEvents implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandlerD
     public void landProjectile(ProjectileHitEvent event) {
         if(event.getEntity().getPersistentDataContainer().has(Main.getInstance().createKey("arrow/damage"))) {
             event.setCancelled(true);

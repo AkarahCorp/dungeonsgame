@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,56 +22,62 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 public class GameEvents implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        try {
-            var playerResult = Database.conn().prepareStatement("""
-                    select * from players
-                        where uuid = '{}'
-                    """
-                    .replaceFirst("\\{}", event.getPlayer().getUniqueId().toString()))
-                    .executeQuery();
-
-            playerResult.next();
-
-            var inventoryString = playerResult.getString("inventory");
-
-            var items = GameEvents.fromInventoryString(inventoryString);
-
-            event.getPlayer().getInventory().clear();
-
-            var idx = 0;
-            for (var item : items) {
-                if (item == null) {
-                    idx += 1;
-                    continue;
-                }
-                event.getPlayer().getInventory().setItem(idx, item);
-                idx += 1;
+        Database.sqlResult(
+                "select * from players where uuid = '{}'"
+                        .replaceFirst("\\{}", event.getPlayer().getUniqueId().toString())
+        ).thenAccept(playerResult -> {
+            if(playerResult == null) {
+                // if the player doesn't have an entry in the database, clear their inv and dip
+                Bukkit.getGlobalRegionScheduler().run(Main.getInstance(),
+                        task -> event.getPlayer().getInventory().clear());
+                return;
             }
 
             try {
+                playerResult.next();
+
                 var experience = playerResult.getInt("experience");
                 Main.getInstance().data().statsHolder()
-                    .setXP(event.getPlayer(), experience);
+                        .setXP(event.getPlayer(), experience);
 
                 var essence = playerResult.getInt("essence");
                 Main.getInstance().data().statsHolder()
-                    .setEssence(event.getPlayer(), essence);
-            } catch(SQLException ignored) {
+                        .setEssence(event.getPlayer(), essence);
 
+                var inventoryString = playerResult.getString("inventory");
+
+
+
+                Bukkit.getGlobalRegionScheduler().run(Main.getInstance(), task -> {
+                    var items = GameEvents.fromInventoryString(inventoryString);
+
+                    event.getPlayer().getInventory().clear();
+
+                    var idx = 0;
+                    for (var item : items) {
+                        if (item == null) {
+                            idx += 1;
+                            continue;
+                        }
+                        event.getPlayer().getInventory().setItem(idx, item);
+                        idx += 1;
+                    }
+                });
+
+
+            } catch (SQLException ignored) {
+                // this failure is NOT possible, it's accounted for above
             }
-        } catch (SQLException e) {
-            // failed to get player, just insert a default inventory
-            event.getPlayer().getInventory().clear();
-        }
+        });
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        try {
-            var inventory = GameEvents.getInventoryString(event.getPlayer().getInventory());
-            var sh = Main.getInstance().data().statsHolder();
+        var inventory = GameEvents.getInventoryString(event.getPlayer().getInventory());
+        var sh = Main.getInstance().data().statsHolder();
 
-            var q = """
+        // save player to database
+        var q = """
                     delete from players
                         where uuid = '{0}';
 
@@ -82,18 +89,14 @@ public class GameEvents implements Listener {
                         {5}
                     );
                     """
-                    .replaceFirst("\\{0}", event.getPlayer().getUniqueId().toString())
-                    .replaceFirst("\\{1}", event.getPlayer().getUniqueId().toString())
-                    .replaceFirst("\\{2}", event.getPlayer().getName())
-                    .replaceFirst("\\{3}", inventory)
-                    .replaceFirst("\\{4}", Integer.toString(sh.getXP(event.getPlayer())))
-                    .replaceFirst("\\{5}", Integer.toString(sh.getEssence(event.getPlayer())));
+                .replaceFirst("\\{0}", event.getPlayer().getUniqueId().toString())
+                .replaceFirst("\\{1}", event.getPlayer().getUniqueId().toString())
+                .replaceFirst("\\{2}", event.getPlayer().getName())
+                .replaceFirst("\\{3}", inventory)
+                .replaceFirst("\\{4}", Integer.toString(sh.getXP(event.getPlayer())))
+                .replaceFirst("\\{5}", Integer.toString(sh.getEssence(event.getPlayer())));
 
-            System.out.println(q);
-            Database.conn().prepareStatement(q).execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Database.sql(q);
     }
 
     public static String getInventoryString(Inventory inventory) {
@@ -106,9 +109,6 @@ public class GameEvents implements Listener {
         }
 
         var contents = inventory.getContents();
-        if (contents == null) {
-            return ";";
-        }
 
         for (var item : contents) {
             idx += 1;

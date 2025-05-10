@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 public class Database {
     static Connection databaseConnection;
@@ -26,31 +28,47 @@ public class Database {
         }
     }
 
+    public static void sql(String statement) {
+        Thread.ofVirtual().start(() -> {
+            try {
+                Database.conn().prepareStatement(statement).execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<ResultSet> sqlResult(String statement) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                var preparedStatement = Database.conn().prepareStatement(statement);
+                return preparedStatement.executeQuery();
+            } catch (SQLException e) {
+                return null;
+            }
+        });
+    }
+
     public static void tryInitializeDb() {
-        var conn = Database.conn();
-        try {
-            conn.prepareStatement("""
+        Database.sql("""
                     create table if not exists players (
                         uuid text not null,
                         username text not null,
                         inventory text not null
                     )
-                    """).execute();
+                    """);
 
-            conn.prepareStatement("""
-                    alter table players 
-                        add column if not exists experience 
+        Database.sql("""
+                    alter table players
+                        add column if not exists experience
                         int not null default 0;
-                    """).execute();
+                    """);
 
-            conn.prepareStatement("""
-                alter table players 
+        Database.sql("""
+                alter table players
                     add column if not exists essence
                     int not null default 0;
-                """).execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+                """);
     }
 
     public static Connection conn() {
